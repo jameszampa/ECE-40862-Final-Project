@@ -8,15 +8,14 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 
-site = Client('http://169.254.244.132/xmlrpc.php', 'lawlesj@purdue.edu', 'Bpl2 vF31 ePl6 Unoa rAcC kJGm')
+site = Client('http://192.168.137.26/xmlrpc.php', 'lawlesj@purdue.edu', 'Bpl2 vF31 ePl6 Unoa rAcC kJGm')
 my_posts = site.call(posts.GetPosts())
-camera = PiCamera()
-GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(8, GPIO.IN)
+GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 incomplete = True
 while incomplete:
-	if GPIO.input(8) == GPIO.HIGH:
+	if GPIO.input(12) == False:
+		camera = PiCamera()
 		print("3...")
 		sleep(1)
 		print("2...")
