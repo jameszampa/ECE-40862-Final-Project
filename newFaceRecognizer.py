@@ -9,8 +9,12 @@ from PIL import Image
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 IMG_DIR = os.path.join(BASE_DIR, "images")
 NUM_IMGS = 9
-PATH_TO_FACE = r'C:\Python3\Lib\site-packages\cv2\data\haarcascade_frontalface_alt2.xml'
+PATH_TO_FACE = r'C:\Python3\Lib\site-packages\cv2\data\haarcascade_frontalface_alt2.xml'  # will have to change this too
 BANS = []
+
+
+def getBannedUsers():
+    return BANS
 
 
 def addUser(username, mode):
@@ -108,21 +112,28 @@ def checkUser():
     _smile321()
     ret, frame = cap.read()
 
-    gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.5, minNeighbors=5)
 
+    max_conf = 0
+    max_id = 0
     if len(faces) > 0:
         for (x, y, w, h) in faces:
             roi_gray = gray[y:y+h, x:x+w]
             # roi_color = frame[y:y+h, x:x+w]
             id_, conf = recognizer.predict(roi_gray)
+            if conf > max_conf:
+                max_conf = conf
+                max_id = id_
             if labels[id_] in BANS:
                 print(labels[id_] + " is banned!")
             else:
                 print(labels[id_], conf)
     else:
         print("No faces in image!")
+
     cap.release()
+    return labels[max_id], max_conf
 
 
 def banUser(username):

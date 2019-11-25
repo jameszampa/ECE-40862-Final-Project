@@ -5,13 +5,23 @@ from PIL import Image
 import pickle
 import os
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+IMG_DIR = os.path.join(BASE_DIR, "images")
+
+face_cascade = cv2.CascadeClassifier('cascades/data/haarcascade_frontalface_alt2.xml')
+recognizer = cv2.face.LBPHFaceRecognizer_create()
+
+
+def recognize_face(filePath):
+    pass
+
 
 def train_network():
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    IMG_DIR  = os.path.join(BASE_DIR, "images")
+    # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    # IMG_DIR = os.path.join(BASE_DIR, "images")
 
-    face_cascade = cv2.CascadeClassifier('cascades/data/haarcascade_frontalface_alt2.xml')
-    recognizer   = cv2.face.LBPHFaceRecognizer_create()
+    # face_cascade = cv2.CascadeClassifier('cascades/data/haarcascade_frontalface_alt2.xml')
+    # recognizer = cv2.face.LBPHFaceRecognizer_create()
 
     curr_id = 0
     label_ids = {}
@@ -21,7 +31,7 @@ def train_network():
     for root, dirs, files in os.walk(IMG_DIR):
         for f in files:
             if f.endswith("png") or f.endswith("jpg") or f.endswith("jpeg"):
-                path  = os.path.join(root, f)
+                path = os.path.join(root, f)
                 label = os.path.basename(root).replace(" ", "-").lower()
 
                 if label not in label_ids:
