@@ -88,7 +88,7 @@ def _intruderPost(image):
     data = {'name': image, 'type': 'image/jpeg'}
     with open(image, 'rb') as img:
         data['bits'] = xmlrpc_client.Binary(img.read())
-    response = site.call(media.UploadFile(data))
+    response = site.call(WordpressMedia.UploadFile(data))
     attachment_id = response['id']
     post = WordPressPost()
     post.title = 'Unauthorized Access Attempt'
